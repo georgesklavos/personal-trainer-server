@@ -1,0 +1,36 @@
+{
+  "system": [
+    {
+      "id": 1000,
+      "name": "metric"
+    },
+    {
+      "id": 1001,
+      "name": "imperial"
+    }
+  ],
+  "currency": [
+    {
+      "id": 2000,
+      "name": "euro"
+    },
+    {
+      "id": 2001,
+      "name": "dollar"
+    }
+  ],
+  "roles": [
+    {
+      "id": 3000,
+      "name": "Admin"
+    },
+    {
+      "id": 3001,
+      "name": "Trainer"
+    },
+    {
+      "id": 3002,
+      "name": "Client"
+    }
+  ]
+}

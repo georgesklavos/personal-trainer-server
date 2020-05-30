@@ -1,0 +1,97 @@
+{
+  "systems": {
+    "1000": {
+      "weight": {
+        "name": "kilogram",
+        "symbol": "Kg",
+        "value": 2.2
+      },
+      "height": {
+        "name": "centimetres",
+        "symbol": "cm",
+        "value": 0.39
+      },
+      "distance": {
+        "name": "kilometer",
+        "symbol": "km",
+        "value": 0.625
+      }
+    },
+    "1001": {
+      "weight": {
+        "name": "pound",
+        "symbol": "lb",
+        "value": 0.45
+      },
+      "height": {
+        "name": "inch",
+        "symbol": "in",
+        "value": 2.54
+      },
+      "distance": {
+        "name": "mile",
+        "symbol": "mi",
+        "value": 1.6
+      }
+    }
+  },
+
+  "currency": {
+    "2000": {
+      "name": "EUR",
+      "symbol": "€",
+      "value": 1.09
+    },
+    "2001": {
+      "name": "USD",
+      "symbol": "$",
+      "value": 0.91
+    }
+  },
+  "program": [
+    { "id": 4000, "name": "Week" },
+    { "id": 4001, "name": "Month" },
+    { "id": 4002, "name": "Year" }
+  ],
+  "sex": [
+    { "id": 5000, "name": "Male" },
+    { "id": 5001, "name": "Female" },
+    { "id": 5002, "name": "Other" }
+  ],
+
+  "level": [
+    { "id": 6000, "name": "Amateur" },
+    { "id": 6001, "name": "Professional" }
+  ],
+  "target": [
+    { "id": 7000, "name": "Gain mass" },
+    { "id": 7001, "name": "Lose weight" }
+  ],
+  "paymentType": [
+    { "id": 8000, "name": "Paypal" },
+    { "id": 8001, "name": "Bank" }
+  ],
+  "exerciseMode": [
+    { "id": 9000, "name": "Circuit" },
+    { "id": 9001, "name": "Set" }
+  ],
+  "exerciseOptions": [
+    { "id": 10000, "name": "Kg" },
+    { "id": 10001, "name": "Min" },
+    { "id": 10002, "name": "Rep" },
+    { "id": 10003, "name": "Sec" }
+  ],
+  "warmUpExercises": [
+    { "id": 11000, "name": "Foam roller" },
+    { "id": 11001, "name": "Bend over" },
+    { "id": 11002, "name": "Ball" }
+  ],
+  "workoutExercises": [
+    { "id": 12000, "name": "Row x10" },
+    { "id": 12001, "name": "Ohp x20" }
+  ],
+  "coolUpExercises": [
+    { "id": 13000, "name": "test Cool up1" },
+    { "id": 13001, "name": "test Cool up2" }
+  ]
+}
