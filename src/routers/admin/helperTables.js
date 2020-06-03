@@ -6,7 +6,8 @@ const { auth, authRole } = require("../../middleware/auth");
 
 router.post(
   "/api/uploadTypes",
-
+  auth,
+  authRole(3000),
   async (req, res, next) => {
     try {
       const types = new Types(req.body);
@@ -21,7 +22,8 @@ router.post(
 
 router.post(
   "/api/uploadValues",
-
+  auth,
+  authRole(3000),
   async (req, res, next) => {
     try {
       const values = new Values(req.body);
