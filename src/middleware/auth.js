@@ -74,7 +74,17 @@ const authRole = (role) => {
   };
 };
 
+const authAdminTrainer = (role1, role2) => {
+  return (req, res, next) => {
+    if (req.user.role != role1 && req.user.role != role2) {
+      return res.status(401).send("Not allowed");
+    }
+    next();
+  };
+};
+
 module.exports = {
   auth,
   authRole,
+  authAdminTrainer,
 };

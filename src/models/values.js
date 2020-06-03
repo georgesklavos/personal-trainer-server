@@ -120,6 +120,13 @@ const valuesSchema = new mongoose.Schema({
       _id: false,
     },
   ],
+  stepsDistance: [
+    {
+      id: Number,
+      name: String,
+      _id: false,
+    },
+  ],
 });
 
 const Values = mongoose.model("Values", valuesSchema);

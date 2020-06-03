@@ -19,7 +19,6 @@ const exerciseShema = new mongoose.Schema(
         name: Number,
         value: Number,
         option: Number,
-        _id: false,
       },
     ],
     workoutExercises: [
@@ -27,7 +26,6 @@ const exerciseShema = new mongoose.Schema(
         name: Number,
         value: Number,
         option: Number,
-        _id: false,
       },
     ],
     coolUpExercises: [
@@ -35,7 +33,6 @@ const exerciseShema = new mongoose.Schema(
         name: Number,
         value: Number,
         option: Number,
-        _id: false,
       },
     ],
   },

@@ -12,7 +12,9 @@ const logoutRouter = require("./routers/mutual/logout");
 const clientRouterFromTrainer = require("./routers/trainer/clients");
 const updateRouters = require("./routers/mutual/update");
 const userData = require("./routers/mutual/userData");
-const daysRouterAdmin = require("./routers/admin-trainer/days");
+const daysRouterAdminAndTrainer = require("./routers/admin-trainer/days");
+const daysRouterClient = require("./routers/client/days");
+const path = require("path");
 
 const app = express();
 const server = http.createServer(app);
@@ -28,7 +30,24 @@ app.use(logoutRouter);
 app.use(clientRouterFromTrainer);
 app.use(updateRouters);
 app.use(userData);
-app.use(daysRouterAdmin);
+app.use(daysRouterAdminAndTrainer);
+app.use(daysRouterClient);
+
+if (process.env.NODE_ENV === "production") {
+  // Static folder
+  console.log(path.join(__dirname, "/../public/index.html"));
+  app.use(express.static(path.join(__dirname, "/../public/")));
+  // Web Socket
+  io.origins();
+
+  // Handle SPA
+
+  app.get(/.*/, (req, res) => {
+    res.sendFile(path.join(__dirname, "/../public/index.html"));
+  });
+} else {
+  io.origins("http://localhost:8080");
+}
 
 app.use(function (err, req, res, next) {
   res.status(err.status || 500);

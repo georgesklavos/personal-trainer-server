@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/index",
+    "startLocal": "env-cmd -f ./config/production.env node src/index",
     "dev": "env-cmd -f ./config/dev.env nodemon src/index"
   },
   "author": "George Sklavos",

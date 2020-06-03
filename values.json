@@ -93,5 +93,10 @@
   "coolUpExercises": [
     { "id": 13000, "name": "test Cool up1" },
     { "id": 13001, "name": "test Cool up2" }
+  ],
+  "stepsDistance": [
+    { "id": 14000, "name": "Day" },
+    { "id": 14001, "name": "Week" },
+    { "id": 14002, "name": "Month" }
   ]
 }
