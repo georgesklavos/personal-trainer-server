@@ -27,6 +27,29 @@ const auth = async (req, res, next) => {
   }
 };
 
+const authUrl = async (req, res, next) => {
+  try {
+    const token = req.query.auth;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const user = await User.findOne({
+      _id: decoded._id,
+      "tokens.token": token,
+    });
+
+    if (!user) {
+      throw new Error("Please authenticate");
+    }
+
+    req.token = token;
+    req.user = user;
+
+    next();
+  } catch (error) {
+    res.status(401).send({ error });
+  }
+};
+
 // const auth = async (req, res, next) => {
 //   try {
 //     const token = req.header("Authorization").replace("Bearer ", "");
@@ -87,4 +110,5 @@ module.exports = {
   auth,
   authRole,
   authAdminTrainer,
+  authUrl,
 };

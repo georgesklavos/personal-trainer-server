@@ -13,7 +13,6 @@ router.get(
   authRole(3001),
   async (req, res, next) => {
     const deleteFields = (data) => {
-      delete data.paymentType;
       delete data.systemType;
       delete data.currency;
       delete data.password;
@@ -41,6 +40,7 @@ router.get(
         trainer.clients.forEach(async (user) => {
           let client = await Client.findOne({ user: user.client });
           let userData = await User.findOne({ _id: user.client });
+
           client = client.toObject();
           client = deleteFields(client);
 

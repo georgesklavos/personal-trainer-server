@@ -144,7 +144,11 @@ router.post(
 
       await client.save();
 
-      const macrosBody = { user: savedUser._id };
+      const macrosBody = {
+        user: savedUser._id,
+        macrosClient: { systemSaved: req.user.systemType },
+        macrosTrainer: { systemSaved: req.user.systemType },
+      };
       const macros = new Macros(macrosBody);
 
       await macros.save();
@@ -222,6 +226,38 @@ router.post(
       await trainer.save();
 
       res.status(201).send();
+    } catch (error) {
+      next(createError(400, error));
+    }
+  }
+);
+
+router.patch(
+  "/api/clientSignUp",
+  auth,
+  authRole(3000),
+  async (req, res, next) => {
+    try {
+      await Client.findOneAndUpdate({ user: req.body.user }, req.body, {
+        upsert: true,
+      });
+      res.send();
+    } catch (error) {
+      next(createError(400, error));
+    }
+  }
+);
+
+router.patch(
+  "/api/trainerSignUp",
+  auth,
+  authRole(3000),
+  async (req, res, next) => {
+    try {
+      await Trainer.findOneAndUpdate({ user: req.body.user }, req.body, {
+        upsert: true,
+      });
+      res.send();
     } catch (error) {
       next(createError(400, error));
     }

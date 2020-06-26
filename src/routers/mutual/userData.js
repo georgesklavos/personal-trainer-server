@@ -13,6 +13,11 @@ router.get("/api/roleInfo", auth, async (req, res, next) => {
       userData = await Trainer.findOne({ user: req.user._id });
     } else if (req.user.role == 3002) {
       userData = await Client.findOne({ user: req.user._id });
+
+      let trainer = await Trainer.findOne({ user: userData.trainer });
+      trainer = trainer.toObject();
+      userData = userData.toObject();
+      userData.trainerPrice = trainer.paymentNumber;
     }
 
     res.send(userData);

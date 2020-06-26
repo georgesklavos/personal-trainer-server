@@ -195,6 +195,10 @@ const macrosSchema = new mongoose.Schema({
         default: false,
       },
     },
+    systemSaved: {
+      type: Number,
+      required: true,
+    },
   },
   macrosClient: {
     1: {
@@ -385,6 +389,10 @@ const macrosSchema = new mongoose.Schema({
         required: true,
         default: false,
       },
+    },
+    systemSaved: {
+      type: Number,
+      required: true,
     },
   },
 });

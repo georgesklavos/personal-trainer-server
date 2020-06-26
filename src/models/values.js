@@ -4,34 +4,75 @@ const valuesSchema = new mongoose.Schema({
   systems: {
     1000: {
       weight: {
-        name: String,
+        name: {
+          en: {
+            type: String,
+          },
+          gr: {
+            type: String,
+          },
+        },
+        symbol: String,
+        value: Number,
+      },
+      weightLessThanKilo: {
+        name: {
+          en: {
+            type: String,
+          },
+          gr: {
+            type: String,
+          },
+        },
         symbol: String,
         value: Number,
       },
       height: {
-        name: String,
+        name: {
+          type: String,
+        },
         symbol: String,
         value: Number,
       },
       distance: {
-        name: String,
+        name: {
+          type: String,
+        },
         symbol: String,
         value: Number,
       },
     },
     1001: {
       weight: {
-        name: String,
+        name: {
+          type: String,
+        },
+        symbol: String,
+        value: Number,
+      },
+      weightLessThanKilo: {
+        name: {
+          en: {
+            type: String,
+          },
+          gr: {
+            type: String,
+          },
+        },
         symbol: String,
         value: Number,
       },
       height: {
-        name: String,
+        name: {
+          type: String,
+        },
         symbol: String,
         value: Number,
       },
       distance: {
-        name: String,
+        name: {
+          type: String,
+        },
         symbol: String,
         value: Number,
       },
@@ -39,12 +80,16 @@ const valuesSchema = new mongoose.Schema({
   },
   currency: {
     "2000": {
-      name: String,
+      name: {
+        type: String,
+      },
       symbol: String,
       value: Number,
     },
     "2001": {
-      name: String,
+      name: {
+        type: String,
+      },
       symbol: String,
       value: Number,
     },
@@ -52,14 +97,30 @@ const valuesSchema = new mongoose.Schema({
   program: [
     {
       id: Number,
-      name: String,
+      name: {
+        en: {
+          type: String,
+        },
+        gr: {
+          type: String,
+        },
+      },
       _id: false,
     },
   ],
   sex: [
     {
       id: Number,
-      name: String,
+      name: {
+        en: {
+          type: String,
+          required: true,
+        },
+        gr: {
+          type: String,
+          required: true,
+        },
+      },
       _id: false,
     },
   ],
@@ -67,28 +128,56 @@ const valuesSchema = new mongoose.Schema({
   level: [
     {
       id: Number,
-      name: String,
+      name: {
+        en: {
+          type: String,
+        },
+        gr: {
+          type: String,
+        },
+      },
       _id: false,
     },
   ],
   target: [
     {
       id: Number,
-      name: String,
+      name: {
+        en: {
+          type: String,
+        },
+        gr: {
+          type: String,
+        },
+      },
       _id: false,
     },
   ],
   paymentType: [
     {
       id: Number,
-      name: String,
+      name: {
+        en: {
+          type: String,
+        },
+        gr: {
+          type: String,
+        },
+      },
       _id: false,
     },
   ],
   exerciseMode: [
     {
       id: Number,
-      name: String,
+      name: {
+        en: {
+          type: String,
+        },
+        gr: {
+          type: String,
+        },
+      },
       _id: false,
     },
   ],
@@ -102,28 +191,56 @@ const valuesSchema = new mongoose.Schema({
   warmUpExercises: [
     {
       id: Number,
-      name: String,
+      name: {
+        en: {
+          type: String,
+        },
+        gr: {
+          type: String,
+        },
+      },
       _id: false,
     },
   ],
   workoutExercises: [
     {
       id: Number,
-      name: String,
+      name: {
+        en: {
+          type: String,
+        },
+        gr: {
+          type: String,
+        },
+      },
       _id: false,
     },
   ],
   coolUpExercises: [
     {
       id: Number,
-      name: String,
+      name: {
+        en: {
+          type: String,
+        },
+        gr: {
+          type: String,
+        },
+      },
       _id: false,
     },
   ],
   stepsDistance: [
     {
       id: Number,
-      name: String,
+      name: {
+        en: {
+          type: String,
+        },
+        gr: {
+          type: String,
+        },
+      },
       _id: false,
     },
   ],

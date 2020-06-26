@@ -2,7 +2,9 @@ const express = require("express");
 require("./db/mongoose");
 const socketio = require("socket.io");
 const http = require("http");
+const path = require("path");
 const logger = require("./middleware/logger");
+const { rateLimiter } = require("./middleware/rateLimiter");
 const adminRouters = require("./routers/admin/signUp");
 const loginRouter = require("./routers/mutual/login");
 const listsRouters = require("./routers/admin/usersLists");
@@ -14,12 +16,19 @@ const updateRouters = require("./routers/mutual/update");
 const userData = require("./routers/mutual/userData");
 const daysRouterAdminAndTrainer = require("./routers/admin-trainer/days");
 const daysRouterClient = require("./routers/client/days");
-const path = require("path");
+const daysRouterTrainer = require("./routers/trainer/days");
+const langRouterAdmin = require("./routers/admin/lang");
+const langRouterMutual = require("./routers/mutual/lang");
+const howYouFeelRouterClient = require("./routers/client/howYouFeel");
+const howYouFeelRouterAdminTrainer = require("./routers/admin-trainer/howYouFeel");
+const clientCharts = require("./routers/client/charts");
+const trainerAdminCharts = require("./routers/admin-trainer/charts");
 
 const app = express();
 const server = http.createServer(app);
 let io = socketio(server);
 
+app.use(rateLimiter);
 app.use(express.json());
 app.use(adminRouters);
 app.use(loginRouter);
@@ -32,6 +41,13 @@ app.use(updateRouters);
 app.use(userData);
 app.use(daysRouterAdminAndTrainer);
 app.use(daysRouterClient);
+app.use(daysRouterTrainer);
+app.use(langRouterAdmin);
+app.use(langRouterMutual);
+app.use(howYouFeelRouterClient);
+app.use(howYouFeelRouterAdminTrainer);
+app.use(clientCharts);
+app.use(trainerAdminCharts);
 
 if (process.env.NODE_ENV === "production") {
   // Static folder
@@ -62,6 +78,7 @@ app.use(function (err, req, res, next) {
   });
 });
 app.use("*", function (req, res) {
+  console.log(req.baseUrl);
   logger.error("The url is not valid");
   res.status(404).send({ error: "The url is not valid" });
 });

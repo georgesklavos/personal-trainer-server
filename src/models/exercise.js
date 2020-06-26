@@ -16,23 +16,62 @@ const exerciseShema = new mongoose.Schema(
     },
     warmUpExercises: [
       {
-        name: Number,
-        value: Number,
-        option: Number,
+        name: {
+          type: Number,
+          required: true,
+        },
+        value: {
+          type: Number,
+          required: true,
+        },
+        option: {
+          type: Number,
+          required: true,
+        },
+        hasVideo: {
+          type: Boolean,
+          default: false,
+        },
       },
     ],
     workoutExercises: [
       {
-        name: Number,
-        value: Number,
-        option: Number,
+        name: {
+          type: Number,
+          required: true,
+        },
+        value: {
+          type: Number,
+          required: true,
+        },
+        option: {
+          type: Number,
+          required: true,
+        },
+        hasVideo: {
+          type: Boolean,
+          default: false,
+        },
       },
     ],
     coolUpExercises: [
       {
-        name: Number,
-        value: Number,
-        option: Number,
+        name: {
+          type: Number,
+          required: true,
+        },
+        value: {
+          type: Number,
+          required: true,
+        },
+        option: {
+          type: Number,
+          required: true,
+        },
+        hasVideo: {
+          type: Boolean,
+          default: false,
+        },
       },
     ],
   },

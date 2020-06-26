@@ -58,23 +58,21 @@ const trainerSchema = new mongoose.Schema(
 );
 
 trainerSchema.methods.toJSON = function () {
-  const user = this;
+  const trainer = this;
 
-  const trainerObject = user.toObject();
+  const trainerObject = trainer.toObject();
 
   delete trainerObject.__v;
   delete trainerObject.createdAt;
   delete trainerObject.updatedAt;
   delete trainerObject.clients;
   delete trainerObject.notes;
-  delete trainerObject.paymentNumber;
   delete trainerObject.age;
   delete trainerObject.sex;
   delete trainerObject.level;
   delete trainerObject.active;
   delete trainerObject.user;
   delete trainerObject._id;
-
   return trainerObject;
 };
 

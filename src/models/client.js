@@ -46,7 +46,6 @@ const clientSchema = new mongoose.Schema(
     paymentType: {
       type: Number,
       required: true,
-      default: 8001,
     },
     lastWeightNumber: {
       type: Number,
@@ -61,7 +60,11 @@ const clientSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    startWeek: {
+    startDate: {
+      type: Date,
+      required: true,
+    },
+    endDate: {
       type: Date,
       required: true,
     },

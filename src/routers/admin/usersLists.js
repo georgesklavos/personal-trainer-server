@@ -9,6 +9,7 @@ const Trainer = require("../../models/trainer");
 const Client = require("../../models/client");
 const _ = require("lodash");
 const Values = require("../../models/values");
+const { cli } = require("winston/lib/winston/config");
 
 router.get("/api/getTrainers", auth, authRole(3000), async (req, res, next) => {
   try {
@@ -42,23 +43,33 @@ router.get("/api/getClients", auth, authRole(3000), async (req, res, next) => {
     const clients = await Client.find();
     const values = await Values.findOne();
     let finalData = [];
+    if (users.length > 0) {
+      users.forEach(async (user, index) => {
+        let data = clients.find((client) => client.user.equals(user._id));
+        let trainerForClient = await Trainer.findOne({ user: data.trainer });
+        if (req.user.systemType != user.systemType) {
+          data.lastWeightNumber = Math.round(
+            data.lastWeightNumber * values.systems[user.systemType].weight.value
+          );
+          data.heightNumber = Math.round(
+            data.heightNumber * values.systems[user.systemType].height.value
+          );
+        }
+        finalData.push(_.merge(data, user));
+        // finalData.push(_.assign(user, data));
 
-    users.forEach((user) => {
-      let data = clients.find((client) => client.user.equals(user._id));
-
-      if (req.user.systemType != user.systemType) {
-        data.lastWeightNumber = Math.round(
-          data.lastWeightNumber * values.systems[user.systemType].weight.value
+        _.set(
+          finalData[index],
+          "_doc.paymentNumber",
+          trainerForClient.paymentNumber
         );
-        data.heightNumber = Math.round(
-          data.heightNumber * values.systems[user.systemType].height.value
-        );
-      }
-
-      finalData.push(_.merge(data, user));
-    });
-
-    res.status(200).send(finalData);
+        if (finalData.length == clients.length) {
+          res.status(200).send(finalData);
+        }
+      });
+    } else {
+      res.send(users);
+    }
   } catch (error) {
     next(createError(400, error));
   }
