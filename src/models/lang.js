@@ -463,6 +463,10 @@ const langObject = {
         type: String,
         required: true,
       },
+      verifyPayment: {
+        type: String,
+        required: true,
+      },
     },
     video: {
       exercise: {

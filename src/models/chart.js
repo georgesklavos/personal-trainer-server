@@ -28,6 +28,10 @@ let chartSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
+  systemSaved: {
+    type: Number,
+    required: true,
+  },
 });
 
 const Chart = mongoose.model("Chart", chartSchema);

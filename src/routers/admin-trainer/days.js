@@ -18,7 +18,7 @@ const path = require("path");
 const moment = require("moment");
 const Day = require("../../models/day");
 const User = require("../../models/users");
-const { cli } = require("winston/lib/winston/config");
+const values = require("../../models/values");
 
 router.post(
   "/api/day",
@@ -165,6 +165,61 @@ router.get(
   async (req, res, next) => {
     try {
       const macros = await Macros.findOne({ user: req.params.user });
+      const values = await Values.findOne();
+
+      if (req.user.systemType != macros.macrosTrainer.systemSaved) {
+        Object.keys(macros.macrosTrainer).forEach((el) => {
+          if (el != "systemSaved") {
+            macros.macrosTrainer[el].proteins = (
+              macros.macrosTrainer[el].proteins *
+              values.systems[macros.macrosTrainer.systemSaved]
+                .weightLessThanKilo.value
+            ).toFixed(2);
+            macros.macrosTrainer[el].carbs = (
+              macros.macrosTrainer[el].carbs *
+              values.systems[macros.macrosTrainer.systemSaved]
+                .weightLessThanKilo.value
+            ).toFixed(2);
+            macros.macrosTrainer[el].fats = (
+              macros.macrosTrainer[el].fats *
+              values.systems[macros.macrosTrainer.systemSaved]
+                .weightLessThanKilo.value
+            ).toFixed(2);
+            macros.macrosTrainer[el].calories = (
+              macros.macrosTrainer[el].calories *
+              values.systems[macros.macrosTrainer.systemSaved]
+                .weightLessThanKilo.value
+            ).toFixed(2);
+          }
+        });
+      }
+
+      if (req.user.systemType != macros.macrosClient.systemSaved) {
+        Object.keys(macros.macrosClient).forEach((el) => {
+          if (el != "systemSaved") {
+            macros.macrosClient[el].proteins = (
+              macros.macrosClient[el].proteins *
+              values.systems[macros.macrosClient.systemSaved].weightLessThanKilo
+                .value
+            ).toFixed(2);
+            macros.macrosClient[el].carbs = (
+              macros.macrosClient[el].carbs *
+              values.systems[macros.macrosClient.systemSaved].weightLessThanKilo
+                .value
+            ).toFixed(2);
+            macros.macrosClient[el].fats = (
+              macros.macrosClient[el].fats *
+              values.systems[macros.macrosClient.systemSaved].weightLessThanKilo
+                .value
+            ).toFixed(2);
+            macros.macrosClient[el].calories = (
+              macros.macrosClient[el].calories *
+              values.systems[macros.macrosClient.systemSaved].weightLessThanKilo
+                .value
+            ).toFixed(2);
+          }
+        });
+      }
 
       res.send({
         trainer: macros.macrosTrainer[req.params.day],

@@ -23,12 +23,32 @@ const howYouFeelRouterClient = require("./routers/client/howYouFeel");
 const howYouFeelRouterAdminTrainer = require("./routers/admin-trainer/howYouFeel");
 const clientCharts = require("./routers/client/charts");
 const trainerAdminCharts = require("./routers/admin-trainer/charts");
+const trainerAdminVerifyPayment = require("./routers/admin-trainer/payment");
+const clientPayment = require("./routers/client/payment");
 
 const app = express();
 const server = http.createServer(app);
 let io = socketio(server);
 
-app.use(rateLimiter);
+if (process.env.NODE_ENV === "production") {
+  // Static folder
+  console.log(path.join(__dirname, "/../public/index.html"));
+  app.use(express.static(path.join(__dirname, "/../public/")));
+  // Web Socket
+  io.origins();
+
+  // Handle SPA
+
+  app.get(/.*/, (req, res) => {
+    res.sendFile(path.join(__dirname, "/../public/index.html"));
+  });
+
+  // limit api calls
+  app.use(rateLimiter);
+} else {
+  io.origins("http://localhost:8080");
+}
+
 app.use(express.json());
 app.use(adminRouters);
 app.use(loginRouter);
@@ -48,22 +68,8 @@ app.use(howYouFeelRouterClient);
 app.use(howYouFeelRouterAdminTrainer);
 app.use(clientCharts);
 app.use(trainerAdminCharts);
-
-if (process.env.NODE_ENV === "production") {
-  // Static folder
-  console.log(path.join(__dirname, "/../public/index.html"));
-  app.use(express.static(path.join(__dirname, "/../public/")));
-  // Web Socket
-  io.origins();
-
-  // Handle SPA
-
-  app.get(/.*/, (req, res) => {
-    res.sendFile(path.join(__dirname, "/../public/index.html"));
-  });
-} else {
-  io.origins("http://localhost:8080");
-}
+app.use(trainerAdminVerifyPayment);
+app.use(clientPayment);
 
 app.use(function (err, req, res, next) {
   res.status(err.status || 500);

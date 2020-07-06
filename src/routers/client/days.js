@@ -15,6 +15,7 @@ const Values = require("../../models/values");
 const User = require("../../models/users");
 const Client = require("../../models/client");
 const Chart = require("../../models/chart");
+const Payment = require("../../models/payment");
 
 router.get(
   "/api/dayClient/exercises/:date",
@@ -46,25 +47,20 @@ router.get(
       if (req.user.systemType != macros.macrosTrainer.systemSaved) {
         Object.keys(macros.macrosTrainer).forEach((el) => {
           if (el != "systemSaved") {
-            macros.macrosTrainer[el].proteins = (
+            macros.macrosTrainer[el].proteins = Math.round(
               macros.macrosTrainer[el].proteins *
-              values.systems[macros.macrosTrainer.systemSaved]
-                .weightLessThanKilo.value
+                values.systems[macros.macrosTrainer.systemSaved]
+                  .weightLessThanKilo.value
             ).toFixed(2);
-            macros.macrosTrainer[el].carbs = (
+            macros.macrosTrainer[el].carbs = Math.round(
               macros.macrosTrainer[el].carbs *
-              values.systems[macros.macrosTrainer.systemSaved]
-                .weightLessThanKilo.value
+                values.systems[macros.macrosTrainer.systemSaved]
+                  .weightLessThanKilo.value
             ).toFixed(2);
-            macros.macrosTrainer[el].fats = (
+            macros.macrosTrainer[el].fats = Math.round(
               macros.macrosTrainer[el].fats *
-              values.systems[macros.macrosTrainer.systemSaved]
-                .weightLessThanKilo.value
-            ).toFixed(2);
-            macros.macrosTrainer[el].calories = (
-              macros.macrosTrainer[el].calories *
-              values.systems[macros.macrosTrainer.systemSaved]
-                .weightLessThanKilo.value
+                values.systems[macros.macrosTrainer.systemSaved]
+                  .weightLessThanKilo.value
             ).toFixed(2);
           }
         });
@@ -73,25 +69,20 @@ router.get(
       if (req.user.systemType != macros.macrosClient.systemSaved) {
         Object.keys(macros.macrosClient).forEach((el) => {
           if (el != "systemSaved") {
-            macros.macrosClient[el].proteins = (
+            macros.macrosClient[el].proteins = Math.round(
               macros.macrosClient[el].proteins *
-              values.systems[macros.macrosClient.systemSaved].weightLessThanKilo
-                .value
+                values.systems[macros.macrosClient.systemSaved]
+                  .weightLessThanKilo.value
             ).toFixed(2);
-            macros.macrosClient[el].carbs = (
+            macros.macrosClient[el].carbs = Math.round(
               macros.macrosClient[el].carbs *
-              values.systems[macros.macrosClient.systemSaved].weightLessThanKilo
-                .value
+                values.systems[macros.macrosClient.systemSaved]
+                  .weightLessThanKilo.value
             ).toFixed(2);
-            macros.macrosClient[el].fats = (
+            macros.macrosClient[el].fats = Math.round(
               macros.macrosClient[el].fats *
-              values.systems[macros.macrosClient.systemSaved].weightLessThanKilo
-                .value
-            ).toFixed(2);
-            macros.macrosClient[el].calories = (
-              macros.macrosClient[el].calories *
-              values.systems[macros.macrosClient.systemSaved].weightLessThanKilo
-                .value
+                values.systems[macros.macrosClient.systemSaved]
+                  .weightLessThanKilo.value
             ).toFixed(2);
           }
         });
@@ -176,55 +167,42 @@ router.post(
       const clientData = await Client.findOne({ user: req.user._id });
       const values = await Values.findOne();
 
-      if (req.user.systemType != macros.macrosClient.systemSaved) {
-        macros.macrosClient.systemSaved = req.user.systemType;
-        Object.keys(macros.macrosClient).forEach((el) => {
-          if (el != "systemSaved") {
-            macros.macrosClient[el].proteins = (
-              macros.macrosClient[el].proteins *
-              values.systems[macros.macrosClient.systemSaved].weightLessThanKilo
-                .value
-            ).toFixed(2);
-            macros.macrosClient[el].carbs = (
-              macros.macrosClient[el].carbs *
-              values.systems[macros.macrosClient.systemSaved].weightLessThanKilo
-                .value
-            ).toFixed(2);
-            macros.macrosClient[el].fats = (
-              macros.macrosClient[el].fats *
-              values.systems[macros.macrosClient.systemSaved].weightLessThanKilo
-                .value
-            ).toFixed(2);
-            macros.macrosClient[el].calories = (
-              macros.macrosClient[el].calories *
-              values.systems[macros.macrosClient.systemSaved].weightLessThanKilo
-                .value
-            ).toFixed(2);
-          }
-        });
-      }
+      // if (req.user.systemType != macros.macrosClient.systemSaved) {
+      //   macros.macrosClient.systemSaved = req.user.systemType;
+      //   Object.keys(macros.macrosClient).forEach((el) => {
+      //     if (el != "systemSaved") {
+      //       macros.macrosClient[el].proteins = (
+      //         macros.macrosClient[el].proteins *
+      //         values.systems[macros.macrosClient.systemSaved].weightLessThanKilo
+      //           .value
+      //       ).toFixed(2);
+      //       macros.macrosClient[el].carbs = (
+      //         macros.macrosClient[el].carbs *
+      //         values.systems[macros.macrosClient.systemSaved].weightLessThanKilo
+      //           .value
+      //       ).toFixed(2);
+      //       macros.macrosClient[el].fats = (
+      //         macros.macrosClient[el].fats *
+      //         values.systems[macros.macrosClient.systemSaved].weightLessThanKilo
+      //           .value
+      //       ).toFixed(2);
+      //       macros.macrosClient[el].calories = (
+      //         macros.macrosClient[el].calories *
+      //         values.systems[macros.macrosClient.systemSaved].weightLessThanKilo
+      //           .value
+      //       ).toFixed(2);
+      //     }
+      //   });
+      // }
 
       macros.macrosClient[dayOfWeek] = req.body.macros;
-
-      delete req.body.macros;
-
-      // await macros.save();
-
-      await Macros.findOneAndUpdate({ user: req.user._id }, macros);
-      await ClientInput.findOneAndUpdate(
-        { user: req.user._id, date: req.body.date },
-        req.body,
-        {
-          upsert: true,
-        }
-      );
-
+      macros.macrosClient.systemSaved = req.user.systemType;
       const day = await Day.findOne({
         user: req.user._id,
         date: req.body.date,
       });
 
-      if (macros) {
+      if (req.body.macros) {
         day.client.macros = true;
       }
 
@@ -244,7 +222,54 @@ router.post(
         day.client.comment = true;
       }
 
-      // day.client.payment = true;
+      if (req.body.payment) {
+        req.body.payment.client = req.user._id;
+        req.body.payment.dateClientPaid = req.params.date;
+        req.body.payment.systemSaved = req.user.systemType;
+        req.body.payment.verified = false;
+        let payment = await Payment.findOne({
+          $and: [
+            {
+              $expr: {
+                $eq: [
+                  { $month: "$dateClientPaid" },
+                  parseInt(moment(req.params.date, "YYYY-MM-DD").format("M")),
+                ],
+              },
+            },
+            {
+              $expr: {
+                $eq: [
+                  { $year: "$dateClientPaid" },
+                  parseInt(
+                    moment(req.params.date, "YYYY-MM-DD").format("YYYY")
+                  ),
+                ],
+              },
+            },
+            { client: req.user._id },
+          ],
+        });
+        if (payment) {
+          Object.assign(payment, req.body.payment);
+        } else {
+          payment = new Payment(req.body.payment);
+        }
+        await payment.save();
+        day.client.payment = true;
+        delete req.body.payment;
+      }
+
+      delete req.body.macros;
+
+      await Macros.findOneAndUpdate({ user: req.user._id }, macros);
+      await ClientInput.findOneAndUpdate(
+        { user: req.user._id, date: req.body.date },
+        req.body,
+        {
+          upsert: true,
+        }
+      );
 
       let charts = await Chart.find({
         $and: [
@@ -278,11 +303,12 @@ router.post(
           el.fat = macros.macrosClient[dayOfWeek].fats;
 
           el.weight = clientData.lastWeightNumber;
+
+          el.systemSaved = req.user.systemType;
           await el.save();
           alreadyExist = true;
-
-          ++times;
         }
+        ++times;
       });
 
       if (alreadyExist === false && times == charts.length) {
@@ -303,8 +329,9 @@ router.post(
         newChart.fat = macros.macrosClient[dayOfWeek].fats;
 
         newChart.weight = clientData.lastWeightNumber;
+
+        newChart.systemSaved = req.user.systemType;
       }
-      console.log(newChart);
       if (Object.keys(newChart).length > 0) {
         await newChart.save();
       }
@@ -723,17 +750,21 @@ router.get(
       //     moment(el.date).year() == req.params.year
       //   );
       // });
-      let days = await Day.find({
-        $and: [
-          {
-            $expr: { $eq: [{ $month: "$date" }, parseInt(req.params.month)] },
-          },
-          {
-            $expr: { $eq: [{ $year: "$date" }, parseInt(req.params.year)] },
-          },
-          { user: req.user._id },
-        ],
-      });
+      const client = await Client.findOne({ user: req.user._id });
+      let days = [];
+      if (client.payment) {
+        days = await Day.find({
+          $and: [
+            {
+              $expr: { $eq: [{ $month: "$date" }, parseInt(req.params.month)] },
+            },
+            {
+              $expr: { $eq: [{ $year: "$date" }, parseInt(req.params.year)] },
+            },
+            { user: req.user._id },
+          ],
+        });
+      }
 
       res.send(days);
     } catch (error) {

@@ -6,6 +6,9 @@ const multer = require("multer");
 const sharp = require("sharp");
 const _ = require("lodash");
 const Trainer = require("../../models/trainer");
+const Values = require("../../models/values");
+const Client = require("../../models/client");
+const { cli } = require("winston/lib/winston/config");
 
 const upload = multer({
   limits: {
@@ -27,6 +30,7 @@ router.patch("/api/me", auth, async (req, res, next) => {
   const isValidOperations = updates.every((update) =>
     allowedUpdates.includes(update)
   );
+  const values = await Values.findOne();
 
   const updatesForTrainer = updatesTrainer.every((update) =>
     updates.includes(update)
@@ -43,6 +47,22 @@ router.patch("/api/me", auth, async (req, res, next) => {
   }
 
   try {
+    const client = await Client.findOne({ user: req.user._id });
+    // console.log(req.user.systemType);
+    // console.log(req.body.systemType);
+    if (req.user.systemType) {
+      if (req.user.systemType != req.body.systemType) {
+        client.lastWeightNumber = Math.round(
+          client.lastWeightNumber *
+            values.systems[req.user.systemType].weight.value
+        );
+
+        client.heightNumber = Math.round(
+          client.heightNumber * values.systems[req.user.systemType].height.value
+        );
+      }
+    }
+
     updates.forEach((update) => {
       if (updatesForTrainer === true && updatesTrainer.includes(update)) {
         trainer[update] = req.body[update];
@@ -50,7 +70,10 @@ router.patch("/api/me", auth, async (req, res, next) => {
         req.user[update] = req.body[update];
       }
     });
+
     await req.user.save();
+    await client.save();
+
     if (Object.keys(trainer) > 0) {
       await trainer.save();
     }
