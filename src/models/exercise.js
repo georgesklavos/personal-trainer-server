@@ -17,7 +17,7 @@ const exerciseShema = new mongoose.Schema(
     warmUpExercises: [
       {
         name: {
-          type: Number,
+          type: String,
           required: true,
         },
         value: {
@@ -37,7 +37,7 @@ const exerciseShema = new mongoose.Schema(
     workoutExercises: [
       {
         name: {
-          type: Number,
+          type: String,
           required: true,
         },
         value: {
@@ -57,7 +57,7 @@ const exerciseShema = new mongoose.Schema(
     coolUpExercises: [
       {
         name: {
-          type: Number,
+          type: String,
           required: true,
         },
         value: {
