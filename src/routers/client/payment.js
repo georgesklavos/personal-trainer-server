@@ -14,6 +14,7 @@ router.get(
   authRole(3002),
   async (req, res, next) => {
     try {
+      const values = await Values.findOne({});
       const payment = await Payment.findOne({
         $and: [
           {
@@ -29,6 +30,13 @@ router.get(
           { client: req.user._id },
         ],
       });
+      if (payment) {
+        if (req.user.currency != payment.currency) {
+          payment.ammount = (
+            payment.ammount * values.currency[payment.currency].value
+          ).toFixed(2);
+        }
+      }
 
       res.send(payment);
     } catch (error) {

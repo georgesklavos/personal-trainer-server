@@ -225,7 +225,7 @@ router.post(
       if (req.body.payment) {
         req.body.payment.client = req.user._id;
         req.body.payment.dateClientPaid = req.params.date;
-        req.body.payment.systemSaved = req.user.systemType;
+        req.body.payment.currency = req.user.currency;
         req.body.payment.verified = false;
         let payment = await Payment.findOne({
           $and: [

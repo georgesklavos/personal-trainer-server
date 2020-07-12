@@ -26,7 +26,7 @@ let PaymentSchema = new mongoose.Schema({
   verified: {
     type: Boolean,
   },
-  systemSaved: {
+  currency: {
     type: Number,
     required: true,
   },
