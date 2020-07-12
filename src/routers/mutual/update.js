@@ -50,16 +50,19 @@ router.patch("/api/me", auth, async (req, res, next) => {
     const client = await Client.findOne({ user: req.user._id });
     // console.log(req.user.systemType);
     // console.log(req.body.systemType);
-    if (req.user.systemType) {
-      if (req.user.systemType != req.body.systemType) {
-        client.lastWeightNumber = Math.round(
-          client.lastWeightNumber *
-            values.systems[req.user.systemType].weight.value
-        );
+    if (client) {
+      if (req.user.systemType) {
+        if (req.user.systemType != req.body.systemType) {
+          client.lastWeightNumber = Math.round(
+            client.lastWeightNumber *
+              values.systems[req.user.systemType].weight.value
+          );
 
-        client.heightNumber = Math.round(
-          client.heightNumber * values.systems[req.user.systemType].height.value
-        );
+          client.heightNumber = Math.round(
+            client.heightNumber *
+              values.systems[req.user.systemType].height.value
+          );
+        }
       }
     }
 
@@ -72,7 +75,9 @@ router.patch("/api/me", auth, async (req, res, next) => {
     });
 
     await req.user.save();
-    await client.save();
+    if (client) {
+      await client.save();
+    }
 
     if (Object.keys(trainer) > 0) {
       await trainer.save();
