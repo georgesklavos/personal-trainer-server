@@ -30,6 +30,11 @@ const app = express();
 const server = http.createServer(app);
 let io = socketio(server);
 
+app.use(function (req, res, next) {
+  logger.info(`${req.method} - ${req.originalUrl} - ${req.ip}`);
+  next();
+});
+
 app.use(express.json());
 app.use(adminRouters);
 app.use(loginRouter);
@@ -62,7 +67,6 @@ if (process.env.NODE_ENV === "production") {
   // Handle SPA
 
   app.get(/.*/, (req, res) => {
-    // console.log(path.join(__dirname, "/../public/index.html"));
     res.sendFile(path.join(__dirname, "/../public/index.html"));
   });
 
@@ -84,8 +88,8 @@ app.use(function (err, req, res, next) {
     error: err.message,
   });
 });
+
 app.use("*", function (req, res) {
-  console.log(req.baseUrl);
   logger.error("The url is not valid");
   res.status(404).send({ error: "The url is not valid" });
 });
