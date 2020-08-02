@@ -58,6 +58,7 @@ router.get(
           clients.push(client);
 
           if (trainer.clients.length === clients.length) {
+            clients.sort();
             res.send(clients);
           }
         });

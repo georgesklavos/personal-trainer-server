@@ -1,7 +1,7 @@
 const express = require("express");
 const router = new express.Router();
 const createError = require("http-errors");
-const { auth, authRole, authAdminTrainer } = require("../../middleware/auth");
+const { auth, authRole, authOwnerTrainer } = require("../../middleware/auth");
 const moment = require("moment");
 const Chart = require("../../models/chart");
 const Trainer = require("../../models/trainer");

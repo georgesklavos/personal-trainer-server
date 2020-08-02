@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const logger = require("../middleware/logger");
 
 mongoose.connect(
   process.env.MONGODB_URL,
@@ -9,9 +10,9 @@ mongoose.connect(
   },
   (err) => {
     if (!err) {
-      console.log("MongoDB has connected successfully.");
+      logger.info("MongoDB has connected successfully.");
     } else {
-      console.log("MongoDB failed to connect");
+      logger.error("MongoDB failed to connect");
     }
   }
 );

@@ -1,4 +1,5 @@
 const winston = require("winston");
+const moment = require("moment");
 
 // const logger = winston.createLogger({
 //   format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
@@ -42,11 +43,12 @@ const options = {
     colorize: false,
   },
 };
-
 // instantiate a new Winston Logger with the settings defined above
 const logger = new winston.createLogger({
   format: winston.format.combine(
-    winston.format.timestamp(),
+    winston.format.timestamp({
+      format: moment().format("YYYY-MM-DD hh:mm:ss"),
+    }),
     winston.format.json()
   ),
   transports: [

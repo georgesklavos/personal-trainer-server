@@ -5,13 +5,12 @@ const Values = require("../../models/values");
 const createError = require("http-errors");
 const { auth, authRole } = require("../../middleware/auth");
 const User = require("../../models/users");
-const Admin = require("../../models/admin");
 const Client = require("../../models/client");
 const Trainer = require("../../models/trainer");
 const Macros = require("../../models/macros");
 const Language = require("../../models/lang");
 
-router.post("/api/language", auth, authRole(3000), async (req, res, next) => {
+router.post("/api/language", auth, authRole(3003), async (req, res, next) => {
   try {
     await Language.findOneAndUpdate({}, req.body, {
       upsert: true,

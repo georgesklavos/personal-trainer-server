@@ -6,12 +6,14 @@ const Trainer = require("../../models/trainer");
 const Client = require("../../models/client");
 const Values = require("../../models/values");
 const User = require("../../models/users");
+const Owner = require("../../models/owner");
 
 router.get("/api/roleInfo", auth, async (req, res, next) => {
   try {
     let userData = {};
-
-    if (req.user.role == 3001) {
+    if (req.user.role == 3000) {
+      userData = await Owner.findOne({ user: req.user._id });
+    } else if (req.user.role == 3001) {
       userData = await Trainer.findOne({ user: req.user._id });
     } else if (req.user.role == 3002) {
       userData = await Client.findOne({ user: req.user._id });

@@ -7,12 +7,12 @@ const { auth, authRole } = require("../../middleware/auth");
 router.post(
   "/api/uploadTypes",
   auth,
-  authRole(3000),
+  authRole(3003),
   async (req, res, next) => {
     try {
-      const types = new Types(req.body);
-
-      await types.save();
+      await Types.findOneAndUpdate({}, req.body, {
+        upsert: true,
+      });
       res.status(200).send();
     } catch (error) {
       next(createError(500, error));
@@ -23,14 +23,12 @@ router.post(
 router.post(
   "/api/uploadValues",
   auth,
-  authRole(3000),
+  authRole(3003),
   async (req, res, next) => {
     try {
-      const values = new Values(req.body);
-
-      await Values.deleteOne({});
-
-      await values.save();
+      await Values.findOneAndUpdate({}, req.body, {
+        upsert: true,
+      });
       res.status(200).send();
     } catch (error) {
       next(createError(500, error));

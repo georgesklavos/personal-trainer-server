@@ -16,6 +16,10 @@ const trainerSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    owner: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+    },
     age: {
       type: Number,
       required: true,

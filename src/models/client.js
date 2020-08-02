@@ -16,6 +16,10 @@ const clientSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    owner: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+    },
     age: {
       type: Number,
       required: true,
@@ -76,6 +80,11 @@ const clientSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       trim: true,
+    },
+    viewedByTrainer: {
+      type: Boolean,
+      required: true,
+      default: true,
     },
   },
   {

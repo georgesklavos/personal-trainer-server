@@ -16,6 +16,7 @@ const User = require("../../models/users");
 const Client = require("../../models/client");
 const Chart = require("../../models/chart");
 const Payment = require("../../models/payment");
+const Pusher = require("pusher");
 
 router.get(
   "/api/dayClient/exercises/:date",
@@ -335,8 +336,18 @@ router.post(
       if (Object.keys(newChart).length > 0) {
         await newChart.save();
       }
+      clientData.viewedByTrainer = false;
       await clientData.save();
       await day.save();
+
+      let pusher = new Pusher({
+        appId: `${process.env.PUSHER_APPID}`,
+        key: `${process.env.PUSHER_KEY}`,
+        secret: `${process.env.PUSHER_SECRET}`,
+        cluster: `${process.env.PUSHER_CLUSTER}`,
+      });
+
+      pusher.trigger("users", `updateDay-${clientData.trainer}`, {});
 
       res.send();
     } catch (error) {
