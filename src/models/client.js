@@ -80,6 +80,7 @@ const clientSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       trim: true,
+      ref: "Trainer",
     },
     viewedByTrainer: {
       type: Boolean,
@@ -91,6 +92,16 @@ const clientSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+clientSchema.methods.toJSON = function () {
+  const user = this;
+
+  const clientObject = user.toObject();
+
+  delete clientObject.password;
+
+  return clientObject;
+};
 
 const Client = mongoose.model("Client", clientSchema);
 

@@ -44,22 +44,26 @@ const trainerSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    clients: [
-      {
-        client: {
-          type: mongoose.Schema.Types.ObjectId,
-        },
-      },
-    ],
     notes: {
       type: String,
       required: false,
+    },
+    clientsNumber: {
+      type: Number,
+      required: true,
+      default: 0,
     },
   },
   {
     timestamps: true,
   }
 );
+
+trainerSchema.virtual("clients", {
+  ref: "Client",
+  localField: "user",
+  foreignField: "trainer",
+});
 
 trainerSchema.methods.toJSON = function () {
   const trainer = this;

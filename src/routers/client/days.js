@@ -346,8 +346,10 @@ router.post(
         secret: `${process.env.PUSHER_SECRET}`,
         cluster: `${process.env.PUSHER_CLUSTER}`,
       });
-
-      pusher.trigger("users", `updateDay-${clientData.trainer}`, {});
+      console.log(clientData);
+      pusher.trigger("users", `updateDay-${clientData.trainer}`, {
+        user: clientData.user,
+      });
 
       res.send();
     } catch (error) {

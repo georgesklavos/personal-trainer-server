@@ -68,8 +68,8 @@ router.post(
       const correctTarget = values.target.some(
         (el) => el.id === req.body.target
       );
-      const trainer = await Trainer.findOne({ user: req.body.trainer });
-
+      let trainer = await Trainer.findOne({ user: req.body.trainer });
+      trainer.clientsNumber += 1;
       try {
         if (!correctSystem) {
           throw createError(400, "The value systemType is not valid");
@@ -111,11 +111,8 @@ router.post(
 
         const client = new Client(req.body);
 
-        trainer.clients.push({ client: savedUser._id });
-
-        await trainer.save();
-
         await client.save();
+        await trainer.save();
 
         const macrosBody = {
           user: savedUser._id,
@@ -235,20 +232,31 @@ router.patch(
       if (req.body.trainer) {
         oldTrainer = await Trainer.findOne({ user: oldTrainerId });
         newTrainer = await Trainer.findOne({ user: client.trainer });
-        let oldIndex = -1;
-        oldTrainer.clients.find((el, index) => {
-          if (el.client.equals(client.user)) {
-            oldIndex = index;
-          }
-        });
-        if (oldIndex > -1) {
-          oldTrainer.clients.splice(oldIndex, 1);
-        }
+        // let oldIndex = -1;
+        // oldTrainer.clients.find((el, index) => {
+        //   if (el.client.equals(client.user)) {
+        //     oldIndex = index;
+        //   }
+        // });
+        // if (oldIndex > -1) {
+        //   oldTrainer.clients.splice(oldIndex, 1);
+        // }
 
-        newTrainer.clients.push({ client: client.user });
+        // newTrainer.clients.push({ client: client.user });
+
+        oldTrainer.clientsNumber -= 1;
+        newTrainer.clientsNumber += 1;
       }
 
-      await Promise.all([client.save(), oldTrainer.save(), newTrainer.save()]);
+      if (Object.keys(oldTrainer).length > 0) {
+        await oldTrainer.save();
+      }
+
+      if (Object.keys(newTrainer).length > 0) {
+        await newTrainer.save();
+      }
+
+      await client.save();
       res.send();
     } catch (error) {
       next(createError(400, error));

@@ -9,6 +9,8 @@ const Trainer = require("../../models/trainer");
 const Values = require("../../models/values");
 const Client = require("../../models/client");
 const { cli } = require("winston/lib/winston/config");
+const User = require("../../models/users");
+const bcrypt = require("bcrypt");
 
 const upload = multer({
   limits: {
@@ -110,5 +112,26 @@ router.post(
     }
   }
 );
+
+router.post("/api/passReset", auth, async (req, res, next) => {
+  try {
+    let user = await User.findOne({ _id: req.user._id });
+
+    // console.log(user);
+
+    const isMatch = await bcrypt.compare(req.body.old, user.password);
+
+    if (!isMatch) {
+      next(createError(400, "The password is wrong"));
+    } else {
+      user.password = req.body.new;
+      await user.save();
+
+      res.send();
+    }
+  } catch (error) {
+    next(createError(400, error));
+  }
+});
 
 module.exports = router;

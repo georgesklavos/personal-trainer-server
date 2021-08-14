@@ -33,38 +33,46 @@ router.get(
 
     try {
       let trainer = await Trainer.findOne({ user: req.user._id });
-      const values = await Values.findOne();
+      // const values = await Values.findOne();  //Future implemetation change the metric system
 
-      if (trainer.clients.length > 0) {
-        let clients = [];
-        trainer.clients.forEach(async (user) => {
-          let client = await Client.findOne({ user: user.client });
-          let userData = await User.findOne({ _id: user.client });
+      /**Not in use for now */
 
-          client = client.toObject();
-          client = deleteFields(client);
+      // if (trainer.clients.length > 0) {
+      //   let clients = [];
+      //   trainer.clients.forEach(async (user) => {
+      //     let client = await Client.findOne({ user: user.client });
+      //     let userData = await User.findOne({ _id: user.client });
 
-          if (req.user.systemType != userData.systemType) {
-            client.lastWeightNumber = Math.round(
-              client.lastWeightNumber *
-                values.systems[userData.systemType].weight.value
-            );
-            client.heightNumber = Math.round(
-              client.heightNumber *
-                values.systems[userData.systemType].height.value
-            );
-          }
+      //     client = client.toObject();
+      //     client = deleteFields(client);
 
-          clients.push(client);
+      //     if (req.user.systemType != userData.systemType) {
+      //       client.lastWeightNumber = Math.round(
+      //         client.lastWeightNumber *
+      //           values.systems[userData.systemType].weight.value
+      //       );
+      //       client.heightNumber = Math.round(
+      //         client.heightNumber *
+      //           values.systems[userData.systemType].height.value
+      //       );
+      //     }
 
-          if (trainer.clients.length === clients.length) {
-            clients.sort();
-            res.send(clients);
-          }
-        });
-      } else {
-        res.send(trainer.clients);
-      }
+      //     clients.push(client);
+
+      //     if (trainer.clients.length === clients.length) {
+      //       clients.sort();
+      //       res.send(clients);
+      //     }
+      //   });
+      // } else {
+      //   res.send(trainer.clients);
+      // }
+      await trainer
+        .populate({
+          path: "clients",
+        })
+        .execPopulate();
+      res.send(trainer.clients);
     } catch (error) {
       next(createError(400, error));
     }

@@ -13,6 +13,10 @@ const langObject = {
     type: String,
     required: true,
   },
+  titleOwner: {
+    type: String,
+    required: true,
+  },
   titleClient: {
     type: String,
     required: true,
@@ -53,12 +57,88 @@ const langObject = {
       required: true,
     },
   },
-  admin: {
+  owner: {
     addTrainer: {
       type: String,
       required: true,
     },
     addClient: {
+      type: String,
+      required: true,
+    },
+  },
+  admin: {
+    createOwner: {
+      type: String,
+      required: true,
+    },
+    firstName: {
+      type: String,
+      required: true,
+    },
+    lastName: {
+      type: String,
+      required: true,
+    },
+    phone: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+    },
+    clients: {
+      type: String,
+      required: true,
+    },
+    trainers: {
+      type: String,
+      required: true,
+    },
+    active: {
+      type: String,
+      required: true,
+    },
+    actions: {
+      type: String,
+      required: true,
+    },
+    search: {
+      type: String,
+      required: true,
+    },
+    loaderCreateOwner: {
+      type: String,
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+  },
+  addOwner: {
+    loadingTextEdit: {
+      type: String,
+      required: true,
+    },
+    loadingTextAdd: {
+      type: String,
+      required: true,
+    },
+    titleAdd: {
+      type: String,
+      required: true,
+    },
+    titleEdit: {
+      type: String,
+      required: true,
+    },
+    create: {
+      type: String,
+      required: true,
+    },
+    close: {
       type: String,
       required: true,
     },
